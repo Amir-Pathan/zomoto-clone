@@ -37,15 +37,16 @@ function Item(props)
         <Paper>
             <img src={props.item.imgUrl}
             style={{
-                width:'100%',
+                width:'98%',
                 maxHeight:'600px',
                 minHeight:'200px',
-                marginLeft:'5px',
+                marginLeft:'1%',
+                marginRight:'1%',
                 marginRight:'5px',
-                marginTop:'15px',
+                marginTop:'70px',
                 borderRadius:'25px'
             }}/>
-            <div style={{marginTop:'-25%',marginLeft:'13%',color:'black'}}>
+            <div style={{marginTop:'-35%',marginLeft:'13%',color:'black'}}>
               <h2>{props.item.categoryName}</h2>
                <div style={{marginLeft:'15px',marginTop:'-10px'}}>
                 Delicious dishes for you on 50% <br/>

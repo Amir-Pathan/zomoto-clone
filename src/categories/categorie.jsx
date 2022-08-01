@@ -27,13 +27,14 @@ function Categories(){
         <Typography variant="h6" 
          style={{
             fontWeight:'bold',
-            marginLeft:'10px'
+            marginLeft:'10px',
+            marginTop:'15px'
          }}>Eat By Categories :</Typography>
         <Grid item container xs={12} md={12} spacing={1}>
             {
                 categories.map((i,index)=>{
                     return <Grid key={index} item xs={4} md={3} style={{
-                        display:'flex',alignItems:'center',justifyContent:'center'}}>
+                        display:'flex',alignItems:'center',justifyContent:'center',marginTop:'10px'}}>
                         <div style={{display:'flex',flexDirection:'column'}}>
                         <img style={style.category} src={i.imgUrl}/>
                         <Typography variant='p'
