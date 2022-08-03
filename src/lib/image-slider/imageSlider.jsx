@@ -10,7 +10,7 @@ export default function ImageCorousel(props)
 
     useEffect(()=>{
 
-        Services.getCategories().then((res)=>{
+        Services.getData('categories').then((res)=>{
             console.log(res);
             setItems(res)
         }).catch((err)=>{

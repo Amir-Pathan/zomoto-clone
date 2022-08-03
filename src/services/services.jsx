@@ -3,11 +3,11 @@ import axios from 'axios'
 const url ='http://localhost:8089/'
 
 const Services={
-    getCategories:()=>{
+    getData:(path)=>{
 
        return new Promise((resolve,reject)=>{
 
-        axios.get(url+"categories").then((res)=>{
+        axios.get(url+path).then((res)=>{
 
             console.log(res.data);
 
@@ -22,11 +22,11 @@ const Services={
 
     },
 
-    isAble:(no)=>{
+    isAble:(no,path)=>{
 
         return new Promise((resolve,reject)=>{
 
-            axios.get(url+'customers/'+no).then((res)=>{
+            axios.get(url+path+no).then((res)=>{
 
                 if(res.data.length>0){
 

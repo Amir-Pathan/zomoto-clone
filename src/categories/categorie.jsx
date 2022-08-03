@@ -16,7 +16,7 @@ function Categories(){
 
     useEffect(()=>{
 
-        Services.getCategories().then((res)=>{
+        Services.getData('categories').then((res)=>{
             setCategories(res)
         }).catch((err)=>console.log(err))
 
