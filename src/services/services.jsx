@@ -2,16 +2,21 @@ import axios from 'axios'
 
 const url ='http://localhost:8089/'
 
+let fvrt = localStorage.getItem('zomotoFaverote')
+
+fvrt = JSON.parse(fvrt)
+
 const Services={
     getData:(path)=>{
+
+        console.log(path);
 
        return new Promise((resolve,reject)=>{
 
         axios.get(url+path).then((res)=>{
-
-            console.log(res.data);
-
-            resolve(res.data)
+            
+            
+        resolve(res.data)
 
         }).catch((err)=>{
             console.log(err);
@@ -64,6 +69,57 @@ const Services={
             })
 
         })
+    },
+
+    getUser:()=>{
+ 
+        let user = localStorage.getItem('customer')
+
+        user = JSON.parse(user)
+
+        return user
+        
+    },
+
+    getFvrt:()=>{
+
+        console.log(fvrt);
+
+        return fvrt
+
+    },
+
+    faverote:(id)=>{
+
+        console.log();
+
+        let isAble= false
+
+        let isFvrt = fvrt.includes(id)
+
+        if(isFvrt){
+
+            const removeinFvrt= fvrt.filter((i)=>{
+
+                return i !== id
+
+            })
+
+            localStorage.setItem('zomotoFaverote',JSON.stringify(removeinFvrt))
+
+            isAble = false
+
+        }else{
+
+            fvrt.push(id)
+
+            localStorage.setItem('zomotoFaverote',JSON.stringify(fvrt))
+
+            isAble=true
+
+        }
+
+        return isAble
 
     }
 }

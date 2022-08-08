@@ -8,8 +8,10 @@ export default function ImageCorousel(props)
     
     const [items,setItems] = useState([])
 
+
     useEffect(()=>{
 
+        console.log('mobile');
         Services.getData('categories').then((res)=>{
             console.log(res);
             setItems(res)
