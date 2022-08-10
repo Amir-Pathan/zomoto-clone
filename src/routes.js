@@ -1,5 +1,6 @@
 import CreateAccount from "./createAccount"
 import Home from "./home"
+import CategoryItem from "./categoryItem"
 
 const router = [
     {
@@ -9,6 +10,10 @@ const router = [
     {
         path:'/createAccount',
         component:<CreateAccount/>
+    },
+    {
+        path:'/category/:id',
+        component:<CategoryItem/>
     }
 ]
 

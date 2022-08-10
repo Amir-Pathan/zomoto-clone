@@ -1,15 +1,26 @@
-import logo from './logo.svg';
 import './App.css';
-import CreateAccount from './createAccount';
 import { BrowserRouter as Router,Route,Routes } from 'react-router-dom';
 import router from './routes';
 import { useEffect } from 'react';
+import Services from './services';
 
 function App() {
 
   useEffect(()=>{
 
-    const user = localStorage.getItem('customer')
+    const user = Services.getUser()
+
+    const fvrt= localStorage.getItem('zomotoFaverote')
+
+    const cart = localStorage.getItem('zomotoCart') 
+
+    if(cart===null){
+      localStorage.setItem('zomotoCart',JSON.stringify([]))
+    }
+
+    if(fvrt===null){
+      localStorage.setItem('zomotoFaverote',JSON.stringify([]))
+    }
 
     console.log(user);
 

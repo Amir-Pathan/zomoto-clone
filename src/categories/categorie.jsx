@@ -1,6 +1,7 @@
 import { Grid,Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import Services from "../services/services";
+import { useNavigate } from "react-router-dom";
 
 const style={
     category:{
@@ -14,13 +15,17 @@ function Categories(){
 
     const [categories,setCategories] = useState([])
 
+    const navigate= useNavigate()
+
     useEffect(()=>{
 
-        Services.getCategories().then((res)=>{
+        Services.getData('categories').then((res)=>{
             setCategories(res)
         }).catch((err)=>console.log(err))
 
     },[])
+
+    const toCategoryList=(id)=> navigate('/category/'+id)
 
     return(
         <>
@@ -33,7 +38,9 @@ function Categories(){
         <Grid item container xs={12} md={12} spacing={1}>
             {
                 categories.map((i,index)=>{
-                    return <Grid key={index} item xs={4} md={3} style={{
+                    return <Grid 
+                    onClick={()=>toCategoryList(i._id)}
+                    key={index} item xs={4} md={3} style={{
                         display:'flex',alignItems:'center',justifyContent:'center',marginTop:'10px'}}>
                         <div style={{display:'flex',flexDirection:'column'}}>
                         <img style={style.category} src={i.imgUrl}/>
