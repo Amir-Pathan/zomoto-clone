@@ -18,8 +18,6 @@ function CategoryItem(){
         const res = await Services.getData('products/product/'+id+'/'+user.customerCity.toUpperCase())
         
         setProducts(res)
-
-        console.log(products);
  
     }
 
@@ -43,6 +41,7 @@ function CategoryItem(){
                         imgUrl={product.productImg}
                         originalPrice={product.productOriginalPrice}
                         userId={product.userId}
+                        maxQty={product.productMaxQty}
                         />
                     </Grid>
                 })

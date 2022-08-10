@@ -12,6 +12,12 @@ function App() {
 
     const fvrt= localStorage.getItem('zomotoFaverote')
 
+    const cart = localStorage.getItem('zomotoCart') 
+
+    if(cart===null){
+      localStorage.setItem('zomotoCart',JSON.stringify([]))
+    }
+
     if(fvrt===null){
       localStorage.setItem('zomotoFaverote',JSON.stringify([]))
     }

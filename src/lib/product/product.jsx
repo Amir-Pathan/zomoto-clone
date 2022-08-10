@@ -9,6 +9,7 @@ import { Grid,IconButton } from '@mui/material';
 import CurrencyRupeeIcon from '@mui/icons-material/CurrencyRupee';
 import Services from '../../services/services';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import AddToCartButton from '../addCartButton/addCartButton';
 
 const style={
   price:{
@@ -24,7 +25,7 @@ const style={
 
 export default function ProductCard(props) {
 
-  const {imgUrl,name,id,originalPrice,userId} =props
+  const {imgUrl,name,id,originalPrice,userId,maxQty} =props
 
   const [isFvrt,setFvrt] = React.useState(false)
 
@@ -113,7 +114,10 @@ export default function ProductCard(props) {
             </Grid>
           </Grid>
           <Grid item xs={4} md={6}>
-             <Typography>90</Typography>
+             <AddToCartButton
+             id={id}
+             maxQty={maxQty}
+             />
           </Grid>
         </Grid>
         <Typography 

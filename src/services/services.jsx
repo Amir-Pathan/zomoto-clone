@@ -6,6 +6,10 @@ let fvrt = localStorage.getItem('zomotoFaverote')
 
 fvrt = JSON.parse(fvrt)
 
+let crt = localStorage.getItem('zomotoCart')
+
+crt = JSON.parse(crt)
+
 const Services={
     getData:(path)=>{
 
@@ -120,6 +124,113 @@ const Services={
         }
 
         return isAble
+
+    },
+
+    inCart:(id)=>{
+        let crt = localStorage.getItem('zomotoCart')
+
+        crt = JSON.parse(crt)
+
+        let inCart ={}
+
+         if(crt.length>0){
+
+            const item = crt.filter((i)=>{
+
+                return i.id===id
+
+            })
+
+            //inCart.item=true;
+
+            if(item.length>0){
+
+                if(item[0].id===id){
+
+                    inCart.item=true;
+
+                    inCart.qty=item[0].qty
+
+                }else{
+                    inCart.item=false
+                }
+
+            }else{
+                inCart.item=false
+            } 
+
+
+         }else{
+            inCart.item=false
+         }
+
+         return inCart;
+
+    },
+
+    addCart:(id)=>{
+
+          crt.push({
+            id:id,
+            qty:1
+          })
+
+          localStorage.setItem('zomotoCart',JSON.stringify(crt))
+
+    },
+
+    updateCart:(cntrl,id)=>{
+
+        const index = crt.findIndex((i)=>{
+            return i.id===id
+        })
+
+        console.log(index);
+
+        if(index===-1){
+            return
+        }else{
+
+            if(cntrl==='plus'){
+
+                let increase =crt[index].qty+1;
+
+                console.log(increase);
+
+                crt[index].qty=increase
+
+                localStorage.setItem('zomotoCart',JSON.stringify(crt))
+
+            }else{
+                
+                if(crt[index].qty===1){
+
+                    const removeItem= crt.filter((i)=>{
+
+                        return i.id!==id
+
+                    })
+
+                 console.log(removeItem);
+
+                    localStorage.setItem('zomotoCart',JSON.stringify(removeItem))
+
+                }else{
+
+                    let increase =crt[index].qty-1;
+
+                    console.log(increase);
+    
+                    crt[index].qty=increase
+
+                    localStorage.setItem('zomotoCart',JSON.stringify(crt))
+
+                }
+
+            }
+
+        }
 
     }
 }
