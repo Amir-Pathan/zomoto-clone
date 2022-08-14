@@ -1,6 +1,7 @@
 import CreateAccount from "./createAccount"
 import Home from "./home"
 import CategoryItem from "./categoryItem"
+import Checkout from "./checkout"
 
 const router = [
     {
@@ -14,6 +15,10 @@ const router = [
     {
         path:'/category/:id',
         component:<CategoryItem/>
+    },
+    {
+        path:'/checkout',
+        component:<Checkout/>
     }
 ]
 

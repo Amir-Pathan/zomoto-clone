@@ -19,7 +19,6 @@ const Services={
 
         axios.get(url+path).then((res)=>{
             
-            
         resolve(res.data)
 
         }).catch((err)=>{
@@ -92,6 +91,13 @@ const Services={
         return fvrt
 
     },
+
+    getCart:()=>{
+
+        return crt
+
+    },
+
 
     faverote:(id)=>{
 
@@ -181,6 +187,11 @@ const Services={
     },
 
     updateCart:(cntrl,id)=>{
+
+
+        let crt = localStorage.getItem('zomotoCart')
+
+        crt = JSON.parse(crt)
 
         const index = crt.findIndex((i)=>{
             return i.id===id
