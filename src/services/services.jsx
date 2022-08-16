@@ -19,7 +19,6 @@ const Services={
 
         axios.get(url+path).then((res)=>{
             
-            
         resolve(res.data)
 
         }).catch((err)=>{
@@ -30,6 +29,25 @@ const Services={
        })
 
     },
+
+    postData:(path,data)=>{
+
+        return new Promise((resolve,reject)=>{
+
+            axios.post(url+path,data).then((res)=>{
+
+                resolve(res.data)
+
+            }).catch((err)=>{
+
+                reject(err)
+
+            })
+
+        })
+
+    }
+    ,
 
     isAble:(no,path)=>{
 
@@ -92,6 +110,19 @@ const Services={
         return fvrt
 
     },
+
+    getCart:()=>{
+
+        return crt
+
+    },
+
+    cartEmpty:()=>{
+
+        localStorage.setItem('zomotoCart',JSON.stringify([]))
+
+    },
+
 
     faverote:(id)=>{
 
@@ -181,6 +212,11 @@ const Services={
     },
 
     updateCart:(cntrl,id)=>{
+
+
+        let crt = localStorage.getItem('zomotoCart')
+
+        crt = JSON.parse(crt)
 
         const index = crt.findIndex((i)=>{
             return i.id===id
