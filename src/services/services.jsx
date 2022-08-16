@@ -30,6 +30,25 @@ const Services={
 
     },
 
+    postData:(path,data)=>{
+
+        return new Promise((resolve,reject)=>{
+
+            axios.post(url+path,data).then((res)=>{
+
+                resolve(res.data)
+
+            }).catch((err)=>{
+
+                reject(err)
+
+            })
+
+        })
+
+    }
+    ,
+
     isAble:(no,path)=>{
 
         return new Promise((resolve,reject)=>{
@@ -95,6 +114,12 @@ const Services={
     getCart:()=>{
 
         return crt
+
+    },
+
+    cartEmpty:()=>{
+
+        localStorage.setItem('zomotoCart',JSON.stringify([]))
 
     },
 

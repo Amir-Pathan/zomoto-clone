@@ -7,6 +7,14 @@ import AddToCartButton from "../lib/addCartButton";
 import Divider from "@mui/material/Divider";
 import CurrencyRupeeIcon from '@mui/icons-material/CurrencyRupee';
 import Button from "@mui/material/Button";
+import Radio from '@mui/material/Radio';
+import RadioGroup from '@mui/material/RadioGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import FormControl from '@mui/material/FormControl';
+import FormLabel from '@mui/material/FormLabel';
+import Snackbar from "@mui/material/Snackbar";
+import Alert from "@mui/material/Alert";
+
 
 
 function Bill({id,price,productName,total}){
@@ -48,15 +56,18 @@ class Checkout extends Component{
             product:[],
             hotelsName:[],
             cart:[],
-            address:[]
+            address:[],
+            addressId:'',
+            orderPlaced:false
         }
 
         this.getProducts=this.getProducts.bind(this)
+        this.handlerChange=this.handlerChange.bind(this)
+        this.placeOrder=this.placeOrder.bind(this)
 
     }
 
     getProducts(){
-
 
        const cart = Services.getCart()
 
@@ -75,7 +86,7 @@ class Checkout extends Component{
 
             return Services.getData('sellers/user/'+i.userId).then((result)=>{
                 return result[0].hotelName
-            })
+            }).catch((err)=>console.log(err))
         })
 
         Promise.all(id).then((result)=>{
@@ -91,9 +102,85 @@ class Checkout extends Component{
 
     }
 
+    async getAddress(){
+
+        const user =Services.getUser()
+
+        const data = await Services.getData('address/'+user._id)
+
+        if(data.length>0){
+            this.setState({
+                ...this.state,
+                address:data,
+                addressId:data[0]._id
+            })
+        }
+
+    }
+
     componentDidMount(){
 
+        this.getAddress()
+
         this.getProducts()
+    }
+
+    toAddressPage(){
+        window.location.pathname='/address'
+    }
+
+    handlerChange(e,k){
+
+        this.setState({
+            ...this.state,
+            [k]:e
+        })
+
+    }
+
+    placeOrder(){
+
+        const user = Services.getUser()
+
+        const cart = Services.getCart()
+
+        console.log(cart);
+
+        const orders = this.state.product.map((i,index)=>{
+
+            const order ={
+                qty:cart[index].qty,
+                sellerId:i.userId,
+                customerId:user._id,
+                productId:i._id,
+                addressId:this.state.addressId,
+                status:'placed',
+                price:i.productDiscountedPrice,
+            }
+
+             return Services.postData('orders/',order).then((res)=>{
+
+                return res
+
+             }).catch((err)=>{
+                console.log(err);
+             })
+
+        })
+
+        Promise.all(orders).then((res)=>{
+
+            Services.cartEmpty()
+
+            this.handlerChange(true,'orderPlaced')
+
+            window.location.pathname='/'
+
+            console.log(res);
+
+         }).catch((err)=>{
+            console.log(err);
+         })
 
     }
 
@@ -106,6 +193,8 @@ class Checkout extends Component{
             total = item.productDiscountedPrice*this.state.cart[index].qty+total
 
         })
+
+        console.log(this.state);
 
         return(
             <>
@@ -204,12 +293,50 @@ class Checkout extends Component{
                         </Grid>
                      </Paper>
                    </Grid>
+                   {
+                    this.state.product.length>0?
                    <Grid container item xs={12} md={12} spacing={2}>
+                    
                      <Grid item xs={12} md={6}>
                         <Paper>
                              {
+                                this.state.product.length>0?
                                 this.state.address.length===0?
-                                   <Button fullWidth>Add Address</Button> 
+                                   <Button fullWidth
+                                   onClick={this.toAddressPage}
+                                   >Add Address</Button> 
+                                :<Grid container item xs={12} md={12}>
+                                     <FormControl>
+                                        <FormLabel id="demo-radio-buttons-group-label">Address</FormLabel>
+                                       <RadioGroup
+                                        aria-labelledby="demo-radio-buttons-group-label"
+                                        value={this.state.addressId}
+                                        name="radio-buttons-group"
+                                        onChange={(e)=>this.handlerChange(e.target.value,'addressId')}
+                                        >
+                                            {
+                                                this.state.address.map((i,index)=>{
+                                                    return<FormControlLabel key={index} value={i._id} control={<Radio />} label={
+                                                                <Grid container item xs={12} md={12}>
+                                                                     <Grid item xs={3} md={3}>
+                                                                        <h5>{i.name}</h5>
+                                                                     </Grid>
+                                                                     <Grid item xs={3} md={3}>
+                                                                        <h5>{i.address}</h5>
+                                                                     </Grid>
+                                                                     <Grid item xs={3} md={3}>
+                                                                     <h5>{i.landmark}</h5>
+                                                                     </Grid>
+                                                                     <Grid item xs={3} md={3}>
+                                                                     <h6>{i.no}</h6>
+                                                                     </Grid>
+                                                                </Grid>
+                                                          } />
+                                                })
+                                            }
+                                    </RadioGroup>
+                                    </FormControl>
+                                </Grid>
                                 :null
                              }
                         </Paper>
@@ -221,14 +348,27 @@ class Checkout extends Component{
                                     <Typography>Place Order</Typography>
                                 </Grid>
                                 <Grid item xs={6}md={6}>
-                                    <Button>Place Order</Button>
+                                    <Button
+                                    disabled={this.state.addressId.length>0?false:true}
+                                    onClick={this.placeOrder}
+                                    >Place Order</Button>
                                 </Grid>
                              </Grid>
                         </Paper>
                      </Grid>
-                   </Grid>
+                   </Grid>:null
+                     }
                </Grid>
-
+               <Snackbar open={this.state.orderPlaced} autoHideDuration={3000} 
+                 anchorOrigin={{
+                    vertical:'top',
+                    horizontal:'center'
+                 }}
+               onClose={()=>this.handlerChange(false,'orderPlaced')}>
+                    <Alert onClose={()=>this.handlerChange(false,'orderPlaced')} severity="success" sx={{ width: '100%' }}>
+                         Order Place Succesfully
+                    </Alert>
+                </Snackbar>
             </>
         )
 
